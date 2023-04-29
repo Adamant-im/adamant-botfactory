@@ -1,0 +1,23 @@
+{
+  "name": "adamant-botfactory",
+  "version": "0.1.0",
+  "description": "ADAMANT Bot Framework",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint src",
+    "prepare": "husky install"
+  },
+  "keywords": [
+    "adm",
+    "adamant"
+  ],
+  "author": "ADAMANT Team <devs@adamant.im> (https://adamant.im)",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "@commitlint/cli": "^17.6.1",
+    "@commitlint/config-conventional": "^17.6.1",
+    "eslint": "^8.39.0",
+    "eslint-config-google": "^0.14.0",
+    "husky": "^8.0.3"
+  }
+}
