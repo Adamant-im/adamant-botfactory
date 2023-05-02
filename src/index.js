@@ -1,1 +1,65 @@
-export const createBot = () => null;
+import {BotFactoryError} from './error.js';
+import {Router} from './router/index.js';
+import {Api} from './api/index.js';
+import {User} from './api/user.js';
+
+class Bot extends Router {
+  constructor(passPhrase, options = {}) {
+    super();
+
+    this.api = new Api(passPhrase, options);
+
+    this.handleError = async (err) => {
+      console.error(
+          'Error in middleware while handling transaction',
+          err?.transaction?.id,
+          err.error,
+      );
+      console.error('No error handler was set!');
+      console.error('Set your own error handler with `bot.catch(...)`');
+
+      throw err;
+    };
+  }
+
+  start() {
+    const onNewMessage = this.onNewMessage.bind(this);
+
+    this.api.listen(onNewMessage);
+  }
+
+  catch(handleError) {
+    if (typeof handleError !== 'function') {
+      throw new Error('handleError should be a function');
+    }
+
+    this.handleError = handleError;
+  }
+
+  async onNewMessage(transaction) {
+    const done = (error) => {
+      if (error) {
+        const botFactoryError = new BotFactoryError(error, transaction);
+
+        this.handleError(botFactoryError);
+      }
+    };
+
+    const tx = await this.api.decode(transaction);
+
+    const usr = new User(this.api, {
+      id: tx.senderId,
+      publickKey: tx.senderPublickKey,
+    });
+
+    this.handle(usr, tx, done);
+  }
+}
+
+function createBot(passPhrase, options) {
+  const bot = new Bot(passPhrase, options);
+
+  return bot;
+}
+
+export {createBot, Router};
