@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "lint": "eslint src",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "build": "tsc"
   },
   "keywords": [
     "adm",
@@ -22,6 +23,15 @@
     "husky": "^8.0.3"
   },
   "dependencies": {
-    "adamant-api": "^1.8.0"
+    "@liskhq/lisk-cryptography": "4.0.0-beta.0",
+    "@liskhq/lisk-transactions": "6.0.0-beta.0",
+    "abi-decoder": "^2.4.0",
+    "adamant-api": "^1.8.0",
+    "axios": "^1.4.0",
+    "bignumber.js": "^9.1.1",
+    "bitcoinjs-lib": "^6.1.0",
+    "qs": "^6.11.1",
+    "web3-eth": "^1.9.0",
+    "web3-utils": "^1.9.0"
   }
 }

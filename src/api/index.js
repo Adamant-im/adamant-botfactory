@@ -1,5 +1,14 @@
 import adamantApi from 'adamant-api';
 import keys from 'adamant-api/keys.js';
+import {ethCryptos} from './const.js';
+
+import {
+  Erc20Api,
+  LiskApi,
+  BitcoinApi,
+  DashApi,
+  DogeApi,
+} from './wallets/index.js';
 
 const defaultOptions = {
   logger: console,
@@ -21,10 +30,11 @@ export class Api {
       ...options,
     };
 
-    this.init();
+    this.initApi();
+    this.initWallets();
   }
 
-  init() {
+  initApi() {
     const {logger, nodes: node} = this.options;
     const {logLevel} = logger;
 
@@ -34,6 +44,28 @@ export class Api {
     };
 
     this.api = adamantApi(apiOptions, logger);
+  }
+
+  initWallets() {
+    const {eth, btc, lsk, doge, dash} = this.api;
+    const passPhrase = this.#passPhrase;
+
+    const ethAccount = eth.keys(passPhrase);
+
+    const createOptions = (name) => ({
+      ...ethAccount,
+      ...ethCryptos[name],
+    });
+
+    this.eth = new Erc20Api(createOptions('eth'));
+    this.bnb = new Erc20Api(createOptions('bnb'));
+    this.usds = new Erc20Api(createOptions('usds'));
+
+    this.lisk = new LiskApi(lsk.keys(passPhrase));
+
+    this.bitcoin = new BitcoinApi(btc.keys(passPhrase));
+    this.doge = new DogeApi(doge.keys(passPhrase));
+    this.dash = new DashApi(dash.keys(passPhrase));
   }
 
   listen(onNewMessage) {
