@@ -123,31 +123,196 @@ export class Api {
     return transaction;
   }
 
-  async getAccountInfo(options) {
-    const res = await this.api.get('accounts', options);
+  async _get(endpoint, options) {
+    const response = this.api.get(endpoint, options);
 
-    return res?.data;
+    return response?.data;
   }
 
-  async getAccountBalance(address) {
-    const res = await this.api.get('accounts/getBalance', {address});
+  getAccountInfo(options) {
+    return this._get('accounts', options);
+  }
 
-    return res?.data;
+  getAccountBalance(address) {
+    return this._get('accounts/getBalance', {address});
+  }
+
+  getPublicKey(address) {
+    return this.api.getPublicKey(address);
+  }
+
+  async getBlock(id) {
+    return this._get('blocks/get', {id});
+  }
+
+  async getBlocks(options) {
+    return this._get('blocks', options);
+  }
+
+  async getChats(address, options) {
+    const addr = address ?? this.address;
+
+    return this._get(`chatrooms/${addr}`, options);
+  }
+
+  async getChatMessages(address1, address2, options) {
+    const query = typeof address2 === 'object' ? address2 : options;
+    const address = typeof address2 === 'object' ? this.address : address2;
+
+    return this._get(`chatrooms/${address}/${address1}`, query);
+  }
+
+  async getChatTransactions(senderId, options) {
+    return this._get('chats/get', {senderId, ...options});
+  }
+
+  async getDelegates(options) {
+    return this._get('delegates', options);
+  }
+
+  async getDelegate(options) {
+    return this._get('delegates/get', options);
+  }
+
+  async searchDelegates(q) {
+    return this._get('delegates/search', {q});
+  }
+
+  async getDelegatesCount() {
+    return this._get('delegates/count');
+  }
+
+  async getDelegateStats(generatorPublicKey) {
+    return this._get('delegates/forging/getForgedByAccount', {generatorPublicKey});
+  }
+
+  async getNextForgers(limit) {
+    return this._get('delegates/getNextForgers', {limit});
+  }
+
+  async getVoters(publicKey) {
+    return this._get('delegates/voters', {publicKey});
+  }
+
+  async getVoteData(address) {
+    return this._get('accounts/delegates', {address});
+  }
+
+  async registerDelegate(username) {
+    const response = await this.api.newDelegate(this.#passPhrase, username);
+    return response;
+  }
+
+  async voteForDelegate(votes) {
+    const response = await this.api.voteForDelegate(this.#passPhrase, votes);
+    return response;
+  }
+
+  async getPeers() {
+    return this._get('peers');
+  }
+
+  async getLoadingStatus() {
+    return this._get('loader/status');
+  }
+
+  async getSyncStatus() {
+    return this._get('loader/status/sync');
+  }
+
+  async getPingStatus() {
+    return this._get('loader/status/ping');
+  }
+
+  async getNodeVersion() {
+    return this._get('peers/version');
+  }
+
+  async getBroadhash() {
+    return this._get('blocks/getBroadhash');
+  }
+
+  async getEpoch() {
+    return this._get('blocks/getEpoch');
+  }
+
+  async getHeight() {
+    return this._get('blocks/getHeight');
+  }
+
+  async getFee() {
+    return this._get('blocks/getFee');
+  }
+
+  async getFees() {
+    return this._get('blocks/getFees');
+  }
+
+  async getNethash() {
+    return this._get('blocks/getNethash');
+  }
+
+  async getMilestone() {
+    return this._get('blocks/getMilestone');
+  }
+
+  async getReward() {
+    return this._get('blocks/getReward');
+  }
+
+  async getSupply() {
+    return this._get('blocks/getSupply');
+  }
+
+  async getStatus() {
+    return this._get('blocks/getStatus');
+  }
+
+  async getNodeStatus() {
+    return this._get('node/status');
+  }
+
+  async getTransactions(options) {
+    return this._get('transactions', options);
+  }
+
+  async getTransaction(id, options) {
+    return this._get('transactions/get', {id, ...options});
+  }
+
+  async getTransactionsCount() {
+    return this._get('transactions/count');
+  }
+
+  async getQueuedTransactions() {
+    return this._get('transactions/queued');
+  }
+
+  async getQueuedTransaction(id) {
+    return this._get('transactions/queued/get', {id});
+  }
+
+  async getUnconfirmedTransactions() {
+    return this._get('transactions/unconfirmed');
+  }
+
+  async getUnconfirmedTransaction(id) {
+    return this._get('transactions/unconfirmed/get', {id});
   }
 
   async sendTokens(addressOrPublicKey, amount, isAmountInADM) {
-    const res = await this.api.sendTokens(
+    const response = await this.api.sendTokens(
         this.#passPhrase,
         addressOrPublicKey,
         amount,
         isAmountInADM,
     );
 
-    return res?.data;
+    return response?.data;
   }
 
   async sendMessage(addressOrPublicKey, message, messageType, amount, isADM) {
-    const res = await this.api.sendMessage(
+    const response = await this.api.sendMessage(
         this.#passPhrase,
         addressOrPublicKey,
         message,
@@ -156,6 +321,6 @@ export class Api {
         isADM,
     );
 
-    return res?.data;
+    return response?.data;
   }
 }
