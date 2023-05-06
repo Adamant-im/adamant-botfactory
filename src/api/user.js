@@ -37,5 +37,9 @@ export class User {
         isADM,
     );
   }
+
+  chatMessages() {
+    return this.api.getChatMessages(this.api.address, this.id);
+  }
 }
 
