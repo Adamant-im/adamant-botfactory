@@ -23,4 +23,5 @@ module.exports = {
     'require-jsdoc': 'off',
     'quote-props': 'off',
   },
+  ignorePatterns: ['dist/**/*'],
 };

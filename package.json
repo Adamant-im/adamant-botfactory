@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "description": "ADAMANT Bot Framework",
   "main": "src/index.js",
+  "types": "types/index.d.ts",
   "type": "module",
   "scripts": {
     "lint": "eslint src",
     "prepare": "husky install",
-    "build": "tsc"
+    "build": "rollup -c"
   },
   "keywords": [
     "adm",
@@ -18,9 +19,14 @@
   "devDependencies": {
     "@commitlint/cli": "^17.6.1",
     "@commitlint/config-conventional": "^17.6.1",
+    "@rollup/plugin-json": "^6.0.0",
+    "@types/node": "^20.3.0",
     "eslint": "^8.39.0",
     "eslint-config-google": "^0.14.0",
-    "husky": "^8.0.3"
+    "husky": "^8.0.3",
+    "rollup": "^3.25.1",
+    "typedoc": "^0.24.7",
+    "typescript": "^5.0.4"
   },
   "dependencies": {
     "@liskhq/lisk-cryptography": "4.0.0-beta.0",
