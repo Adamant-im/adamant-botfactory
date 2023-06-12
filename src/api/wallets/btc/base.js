@@ -3,7 +3,7 @@ import bitcoin from 'bitcoinjs-lib';
 import qs from 'qs';
 
 import {ClientApi} from '../client.js';
-import {isPositiveNumber} from '../../utils.js';
+import {isPositiveNumber} from '../../../utils.js';
 
 const getUnique = (array) => [...new Set(array)];
 const isDefined = (value) => String(value) !== 'undefined';

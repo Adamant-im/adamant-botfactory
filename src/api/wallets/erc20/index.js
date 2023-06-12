@@ -67,21 +67,9 @@ export class Erc20Api {
     return Number(balance) || 0;
   }
 
-  async sendTransaction({amount, address, admAddress, comments, increaseFee}) {
+  async sendTransaction({amount, address, increaseFee}) {
     const ethTx = await this.initTransaction(address, amount, increaseFee);
     const signedTx = await this.api.accounts.signTransaction(ethTx, this.privateKey);
-
-    if (admAddress) {
-      const msgPayload = {
-        address: admAddress,
-        amount,
-        comments,
-        crypto: this.crypto,
-        hash: signedTx.transactionHash,
-      };
-
-      await this.sendCryptoTransferMessage(msgPayload);
-    }
 
     let hash = await this.api.sendSignedTransaction(signedTx.rawTransaction);
 

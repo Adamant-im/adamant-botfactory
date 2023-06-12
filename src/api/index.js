@@ -52,20 +52,20 @@ export class Api {
 
     const ethAccount = eth.keys(passPhrase);
 
-    const createOptions = (name) => ({
-      ...ethAccount,
-      ...ethCryptos[name],
-    });
+    for (const [coin, options] of Object.entries(ethCryptos)) {
+      this[coin] = new Erc20Api({
+        ...ethAccount,
+        ...options,
+      });
+    }
 
-    this.eth = new Erc20Api(createOptions('eth'));
-    this.bnb = new Erc20Api(createOptions('bnb'));
-    this.usds = new Erc20Api(createOptions('usds'));
+    const keysOf = (coin) => coin.keys(passPhrase);
 
-    this.lisk = new LiskApi(lsk.keys(passPhrase));
+    this.lisk = new LiskApi(keysOf(lsk));
 
-    this.bitcoin = new BitcoinApi(btc.keys(passPhrase));
-    this.doge = new DogeApi(doge.keys(passPhrase));
-    this.dash = new DashApi(dash.keys(passPhrase));
+    this.bitcoin = new BitcoinApi(keysOf(btc));
+    this.doge = new DogeApi(keysOf(doge));
+    this.dash = new DashApi(keysOf(dash));
   }
 
   listen(onNewMessage) {
@@ -73,14 +73,12 @@ export class Api {
 
     const wsType = options.enableSSL ? 'wss' : 'ws';
 
-    const socket = api.socket.initSocket({
+    api.socket.initSocket({
       wsType,
       onNewMessage,
       socket: true,
       admAddress: this.address,
     });
-
-    this.socket = socket;
   }
 
   async decode(transaction) {

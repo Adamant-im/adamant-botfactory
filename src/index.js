@@ -36,7 +36,7 @@ class Bot extends Router {
     this.handleError = handleError;
   }
 
-  async onNewMessage(transaction) {
+  async handle(transaction) {
     const done = (error) => {
       if (error) {
         const botFactoryError = new BotFactoryError(error, transaction);
@@ -52,7 +52,7 @@ class Bot extends Router {
       publickKey: tx.senderPublickKey,
     });
 
-    this.handle(usr, tx, done);
+    super.handle(usr, tx, done);
   }
 }
 
