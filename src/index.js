@@ -23,7 +23,7 @@ class Bot extends Router {
   }
 
   start() {
-    const onNewMessage = this.onNewMessage.bind(this);
+    const onNewMessage = this.handle.bind(this);
 
     this.api.listen(onNewMessage);
   }
