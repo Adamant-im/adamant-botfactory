@@ -2,7 +2,7 @@
   "name": "adamant-botfactory",
   "version": "0.1.0",
   "description": "ADAMANT Bot Framework",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "types": "types/index.d.ts",
   "type": "module",
   "scripts": {
@@ -13,6 +13,10 @@
   "keywords": [
     "adm",
     "adamant"
+  ],
+  "files": [
+    "dist/",
+    "types/"
   ],
   "author": "ADAMANT Team <devs@adamant.im> (https://adamant.im)",
   "license": "GPL-3.0",
