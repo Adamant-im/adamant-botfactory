@@ -39,7 +39,7 @@ export class Bot extends Router {
   /**
    * Starts the webhook client and listens for new messages
    */
-  start(): void
+  start(callback: () => void): void
 
   /**
    * Sets the bot's error handler

@@ -22,10 +22,12 @@ class Bot extends Router {
     };
   }
 
-  start() {
+  start(callback) {
     const onNewMessage = this.handle.bind(this);
 
     this.api.listen(onNewMessage);
+
+    callback();
   }
 
   catch(handleError) {
