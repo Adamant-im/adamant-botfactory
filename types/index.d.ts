@@ -1,4 +1,4 @@
-/// <reference path="./router/index.d.ts" />
+/// <reference path="./router/index.ts" />
 
 export declare class Api {}
 
@@ -76,6 +76,20 @@ export interface botOptions {
  */
 export function createBot(passPhrase: string, options: botOptions): Bot
 
-export type * from './router/index.d.ts'
+export interface KeyPair {
+  publicKey: Buffer;
+  privateKey: Buffer;
+}
+
+export interface Keys {
+  createKeypairFromPassPhrase(passPhrase: string): KeyPair,
+  createAddressFromPublicKey(passPhrase: Buffer): string
+}
+
+declare const keys: Keys
+
+export {keys}
+
+export * from './router/index.ts'
 
 export type * from './api/index.d.ts'

@@ -1,13 +1,40 @@
 import type { User } from '../api/index.d.ts'
 
-interface Transaction {}
+type AdamantAddress = `U${string}`
+
+export interface Transaction {
+  type: number, // todo: make it enum
+  amount: number,
+  senderId: AdamantAddress,
+  senderPublicKey: string,
+  asset: {
+    chat: {
+      message: string,
+      type: number
+    }
+  },
+  recipientId: AdamantAddress,
+  timestamp: number,
+  signature: string,
+  id: string,
+  fee: number,
+  relays: number,
+  receivedAt: string,
+  block_timestamp: null,
+  recipientPublicKey: string
+}
 
 /**
  * @nav Router
  */
 export type Pattern = string | RegExp | Pattern[]
 
-export type NextFunction = (error: Error) => void
+export type NextFunction = (error?: Error) => void
+
+export interface Command {
+  options: string[],
+  transaction: Transaction
+}
 
 /**
  * You can provide multiple callback functions that behave like middleware to handle a request.
@@ -33,18 +60,18 @@ export type NextFunction = (error: Error) => void
  *
  * @nav Router
  */
-export type Handler = (usr: User, tx: Transaction, next: NextFunction) => void
+export type Handler<T> = (usr: User, tx: T, next: NextFunction) => void
 
 /**
  * @nav Router
  */
 export declare class Router {
   /**
-   * Registers some middleware
+   * Registers some middlewares or routers
    *
    * @param handlers
    */
-  use(...handlers: Handler[]): void
+  use(...handlers: (Handler<Transaction> | Router)[]): void
 
   /**
    * Registers some middleware(s) that will only be executed when the message contains some text specified by `pattern`
@@ -60,7 +87,7 @@ export declare class Router {
    * @param pattern Some pattern to match the incoming text messages that will cause the handlers to be called. Can be RegExp, string or an array of both
    * @param handlers Function to call when the pattern matches
    */
-  hears(pattern: Pattern, ...handlers: Handler[]): void
+  hears(pattern: Pattern, ...handlers: Handler<Transaction>[]): void
 
   /**
    * Registers some middleware that will only be executed when the bot received a message that starts with the specifid command.
@@ -84,5 +111,5 @@ export declare class Router {
    * @param name
    * @param handlers
    */
-  command(name: string, ...handlers: Handler[]): void
+  command(name: Pattern, ...handlers: Handler<Command>[]): void
 }

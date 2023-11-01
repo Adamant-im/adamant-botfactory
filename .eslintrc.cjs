@@ -1,27 +1,46 @@
 module.exports = {
-  env: {
-    es2021: true,
-    node: true,
-  },
-  extends: ['eslint:recommended', 'google'],
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-  },
+  extends: ['eslint:recommended'],
   rules: {
-    'max-len': [
+    'block-scoped-var': 'error',
+    eqeqeq: 'error',
+    'no-var': 'error',
+    'prefer-const': 'error',
+    'eol-last': 'error',
+    'prefer-arrow-callback': 'error',
+    'no-trailing-spaces': 'error',
+    quotes: ['warn', 'single', {avoidEscape: true}],
+    'no-restricted-properties': [
       'error',
       {
-        code: 200,
-        ignoreTrailingComments: true,
-        ignoreUrls: true,
-        ignoreStrings: true,
-        ignoreTemplateLiterals: true,
-        ignoreRegExpLiterals: true,
+        object: 'describe',
+        property: 'only',
+      },
+      {
+        object: 'it',
+        property: 'only',
       },
     ],
-    'require-jsdoc': 'off',
-    'quote-props': 'off',
   },
-  ignorePatterns: ['dist/**/*'],
+  parserOptions: {
+    ecmaVersion: 2022,
+    sourceType: 'module',
+  },
+  env: {
+    browser: true,
+    node: true,
+  },
+  overrides: [
+    {
+      files: ['**/*.ts', '**/*.tsx'],
+      rules: {
+        'node/no-missing-import': 'off',
+        'node/no-empty-function': 'off',
+        'node/no-unsupported-features/es-syntax': 'off',
+        'node/no-missing-require': 'off',
+        'node/shebang': 'off',
+        'no-dupe-class-members': 'off',
+        'require-atomic-updates': 'off',
+      },
+    },
+  ],
 };

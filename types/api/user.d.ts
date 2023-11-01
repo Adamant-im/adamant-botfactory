@@ -1,4 +1,4 @@
-import type { Api, MessageType } from './index.d.ts';
+import type { Api, MessageType, AnyResponse } from './index.d.ts';
 import type {
   GetAccountInfoResponseDto,
   GetAccountBalanceResponseDto,
@@ -25,12 +25,12 @@ export class User {
   /**
    * Returns the user's account information using
    */
-  info(): Promise<GetAccountInfoResponseDto>
+  info(): AnyResponse<GetAccountInfoResponseDto>
 
   /**
    * Gets the user's account balance
    */
-  balance(): Promise<GetAccountBalanceResponseDto>
+  balance(): AnyResponse<GetAccountBalanceResponseDto>
 
   /**
    * Sends the given amount of tokens to the user
@@ -38,7 +38,7 @@ export class User {
    * @param amount Amount to send
    * @param isADM Boolean value representing whenever the amount is in ADM
    */
-  send(amount: number, isADM?: boolean): Promise<TransferTokenResponseDto>
+  send(amount: number, isADM?: boolean): AnyResponse<TransferTokenResponseDto>
 
   /**
    * Sends a message to the user
@@ -48,10 +48,10 @@ export class User {
     messageType?: MessageType,
     amount?: number,
     isADM?: boolean
-  ): Promise<TransferTokenResponseDto>
+  ): AnyResponse<TransferTokenResponseDto>
 
   /**
    * Returns list of the chat messages between the bot and the user
    */
-  chatMessages(): Promise<GetChatMessagesResponseDto>
+  chatMessages(): AnyResponse<GetChatMessagesResponseDto>
 }

@@ -1,24 +1,13 @@
 import adamantApi from 'adamant-api';
 import keys from 'adamant-api/keys.js';
-import {ethCryptos} from './const.js';
-
-import {
-  Erc20Api,
-  LiskApi,
-  BitcoinApi,
-  DashApi,
-  DogeApi,
-} from './wallets/index.js';
 
 const defaultOptions = {
   logger: console,
 };
 
 export class Api {
-  #passPhrase;
-
   constructor(passPhrase, options = {}) {
-    this.#passPhrase = passPhrase;
+    this.passPhrase = passPhrase;
 
     const keyPair = keys.createKeypairFromPassPhrase(passPhrase);
     const address = keys.createAddressFromPublicKey(keyPair.publicKey);
@@ -31,7 +20,6 @@ export class Api {
     };
 
     this.initApi();
-    this.initWallets();
   }
 
   initApi() {
@@ -44,28 +32,6 @@ export class Api {
     };
 
     this.api = adamantApi(apiOptions, logger);
-  }
-
-  initWallets() {
-    const {eth, btc, lsk, doge, dash} = this.api;
-    const passPhrase = this.#passPhrase;
-
-    const ethAccount = eth.keys(passPhrase);
-
-    for (const [coin, options] of Object.entries(ethCryptos)) {
-      this[coin] = new Erc20Api({
-        ...ethAccount,
-        ...options,
-      });
-    }
-
-    const keysOf = (coin) => coin.keys(passPhrase);
-
-    this.lisk = new LiskApi(keysOf(lsk));
-
-    this.bitcoin = new BitcoinApi(keysOf(btc));
-    this.doge = new DogeApi(keysOf(doge));
-    this.dash = new DashApi(keysOf(dash));
   }
 
   listen(onNewMessage) {
@@ -94,22 +60,25 @@ export class Api {
     if (transaction.asset?.chat.own_message) {
       const readerAddress = this.address;
 
-      if (![transaction.senderId, transaction.recipientId].includes(readerAddress)) {
+      if (
+        ![transaction.senderId, transaction.recipientId].includes(readerAddress)
+      ) {
         return transaction;
       }
 
-      const recipientName = transaction.senderId === readerAddress ?
-        transaction.recipientId :
-        transaction.senderId;
+      const recipientName =
+        transaction.senderId === readerAddress
+          ? transaction.recipientId
+          : transaction.senderId;
 
       const publicKey = await this.api.getPublicKey(recipientName);
 
       if (publicKey) {
         const decoded = this.api.decodeMsg(
-            transaction.asset.chat.message,
-            publicKey,
-            this.#passPhrase,
-            transaction.asset.chat.own_message,
+          transaction.asset.chat.message,
+          publicKey,
+          this.passPhrase,
+          transaction.asset.chat.own_message
         );
 
         transaction.asset.chat.message = decoded;
@@ -181,7 +150,9 @@ export class Api {
   }
 
   async getDelegateStats(generatorPublicKey) {
-    return this._get('delegates/forging/getForgedByAccount', {generatorPublicKey});
+    return this._get('delegates/forging/getForgedByAccount', {
+      generatorPublicKey,
+    });
   }
 
   async getNextForgers(limit) {
@@ -197,12 +168,12 @@ export class Api {
   }
 
   async registerDelegate(username) {
-    const response = await this.api.newDelegate(this.#passPhrase, username);
+    const response = await this.api.newDelegate(this.passPhrase, username);
     return response;
   }
 
   async voteForDelegate(votes) {
-    const response = await this.api.voteForDelegate(this.#passPhrase, votes);
+    const response = await this.api.voteForDelegate(this.passPhrase, votes);
     return response;
   }
 
@@ -300,10 +271,10 @@ export class Api {
 
   async sendTokens(addressOrPublicKey, amount, isAmountInADM) {
     const response = await this.api.sendTokens(
-        this.#passPhrase,
-        addressOrPublicKey,
-        amount,
-        isAmountInADM,
+      this.passPhrase,
+      addressOrPublicKey,
+      amount,
+      isAmountInADM
     );
 
     return response?.data;
@@ -311,12 +282,12 @@ export class Api {
 
   async sendMessage(addressOrPublicKey, message, messageType, amount, isADM) {
     const response = await this.api.sendMessage(
-        this.#passPhrase,
-        addressOrPublicKey,
-        message,
-        messageType,
-        amount,
-        isADM,
+      this.passPhrase,
+      addressOrPublicKey,
+      message,
+      messageType,
+      amount,
+      isADM
     );
 
     return response?.data;

@@ -42,4 +42,3 @@ export class User {
     return this.api.getChatMessages(this.api.address, this.id);
   }
 }
-
