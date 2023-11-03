@@ -1,7 +1,10 @@
 # Build directories
-
 docs
 dist
 
 # Dependency directories
 node_modules/
+
+# Files from examples directory
+package-lock.json
+.env

@@ -1,7 +1,7 @@
 import {BotFactoryError} from './error.js';
 import {Router} from './router/index.js';
-import {Api} from './api/index.js';
 import {User} from './api/user.js';
+import {Api} from './api/index.js';
 
 class Bot extends Router {
   constructor(passPhrase, options = {}) {
@@ -9,11 +9,11 @@ class Bot extends Router {
 
     this.api = new Api(passPhrase, options);
 
-    this.handleError = async (err) => {
+    this.handleError = async err => {
       console.error(
-          'Error in middleware while handling transaction',
-          err?.transaction?.id,
-          err.error,
+        'Error in middleware while handling transaction',
+        err?.transaction?.id,
+        err.error
       );
       console.error('No error handler was set!');
       console.error('Set your own error handler with `bot.catch(...)`');
@@ -27,7 +27,7 @@ class Bot extends Router {
 
     this.api.listen(onNewMessage);
 
-    callback();
+    callback?.();
   }
 
   catch(handleError) {
@@ -39,7 +39,7 @@ class Bot extends Router {
   }
 
   async handle(transaction) {
-    const done = (error) => {
+    const done = error => {
       if (error) {
         const botFactoryError = new BotFactoryError(error, transaction);
 

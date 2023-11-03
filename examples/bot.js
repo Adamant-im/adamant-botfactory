@@ -3,10 +3,20 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-const bot = createBot(process.env.PASS_PHRASE);
+const nodes = [
+  'https://endless.adamant.im',
+  'https://clown.adamant.im',
+  'http://23.226.231.225:36666',
+  'http://88.198.156.44:36666',
+  'https://lake.adamant.im',
+];
 
-// bot.command('start', (usr) => {
-//   usr.reply('Hello, world!');
-// });
+const bot = createBot(process.env.PASS_PHRASE, {
+  nodes,
+});
+
+bot.command('start', usr => {
+  usr.reply('Hello, world!');
+});
 
 bot.start();

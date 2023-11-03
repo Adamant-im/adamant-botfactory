@@ -1,6 +1,4 @@
-import adamantConstants from 'adamant-api/src/helpers/constants.js';
-
-const {transactionTypes} = adamantConstants;
+import {TransactionType} from 'adamant-api';
 
 /**
  * The commands must meet the following criteria:
@@ -28,7 +26,7 @@ const {transactionTypes} = adamantConstants;
  * @param {string} text string to test against
  * @return {string?} command name from the text
  */
-const getCommand = (text) => {
+const getCommand = text => {
   const commandRegexp = /^\/([a-zA-Z]+(?:_[a-zA-Z]+)*[a-zA-Z])(?:\s|$)/;
   const match = commandRegexp.exec(text);
 
@@ -44,7 +42,7 @@ const getCommand = (text) => {
 const match = (transaction, type, pattern) => {
   let text;
 
-  if (transaction?.type === transactionTypes.CHAT_MESSAGE) {
+  if (transaction?.type === TransactionType.CHAT_MESSAGE) {
     text = transaction.asset.chat.message;
 
     if (type === 'command') {
@@ -57,7 +55,7 @@ const match = (transaction, type, pattern) => {
   }
 
   if (Array.isArray(pattern)) {
-    return pattern.some((item) => match(transaction, type, item));
+    return pattern.some(item => match(transaction, type, item));
   }
 
   if (pattern === '*') {
@@ -85,7 +83,7 @@ export class Layer {
   handle(usr, msg, done) {
     let index = 0;
 
-    const next = async (error) => {
+    const next = async error => {
       const handler = this.handlers[index++];
 
       if (error) {

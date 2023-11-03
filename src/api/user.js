@@ -20,25 +20,25 @@ export class User {
     return this.api.getAccountInfo(options);
   }
 
-  balance() {
+  async balance() {
     return this.api.getAccountBalance(this.id);
   }
 
-  send(amount, isADM) {
+  async messages() {
+    return this.api.getChatMessages(this.id);
+  }
+
+  async transfer(amount, isADM) {
     return this.api.sendTokens(this.id ?? this.publicKey, amount, isADM);
   }
 
-  reply(message, messageType, amount, isADM) {
+  async reply(message, messageType, amount, isADM) {
     return this.api.sendMessage(
-        this.id ?? this.publicKey,
-        message,
-        messageType,
-        amount,
-        isADM,
+      this.id ?? this.publicKey,
+      message,
+      messageType,
+      amount,
+      isADM
     );
-  }
-
-  chatMessages() {
-    return this.api.getChatMessages(this.api.address, this.id);
   }
 }
