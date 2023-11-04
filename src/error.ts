@@ -1,9 +1,12 @@
-import {AnyTransaction} from 'adamant-api';
+import {DecodedMessageTransaction} from './api';
 
+/**
+ * @nav BotFactoryError
+ */
 export class BotFactoryError extends Error {
-  public transaction?: AnyTransaction;
+  public transaction?: DecodedMessageTransaction;
 
-  constructor(message: string, transaction: AnyTransaction) {
+  constructor(message: string, transaction: DecodedMessageTransaction) {
     super(message);
 
     this.name = 'BotFactoryError';

@@ -6,8 +6,14 @@ import {Router} from './router/index';
 import {Api, type ApiOptions} from './api/index';
 import {User} from './api/user';
 
+/**
+ * @nav Bot
+ */
 type ErrorHandler = (error: BotFactoryError) => void;
 
+/**
+ * @nav Bot
+ */
 class Bot extends Router {
   private api: Api;
 

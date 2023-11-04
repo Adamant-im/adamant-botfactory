@@ -1,6 +1,7 @@
 # Build directories
 docs
 build
+dist
 
 # Dependency directories
 node_modules/

@@ -16,6 +16,9 @@ import {
 } from 'adamant-api';
 
 export interface ApiOptions {
+  /**
+   * List of ADAMANT nodes to connect to, bot will automaticly choose the fastest one.
+   */
   nodes: string[];
   enableSSL?: boolean;
   logger?: CustomLogger;
