@@ -28,23 +28,12 @@
     "@commitlint/config-conventional": "^18.1.0",
     "@types/node": "20.8.2",
     "eslint": "^8.52.0",
-    "eslint-config-google": "^0.14.0",
     "gts": "^5.2.0",
     "husky": "^8.0.3",
     "tsup": "^7.2.0",
-    "typedoc": "^0.25.3",
-    "typescript": "~5.2.0"
+    "typescript": "~5.1.6"
   },
   "dependencies": {
-    "@liskhq/lisk-cryptography": "4.0.0-rc.2",
-    "@liskhq/lisk-transactions": "6.0.0-rc.2",
-    "abi-decoder": "^2.4.0",
-    "adamant-api": "^2.0.0",
-    "axios": "^1.6.0",
-    "bignumber.js": "^9.1.2",
-    "bitcoinjs-lib": "^6.1.5",
-    "qs": "^6.11.2",
-    "web3-eth": "^4.3.1",
-    "web3-utils": "^4.0.7"
+    "adamant-api": "^2.0.0"
   }
 }
