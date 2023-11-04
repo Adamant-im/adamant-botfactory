@@ -1,16 +1,8 @@
 {
-  "include": [
-    "./types/**/*.d.ts"
-  ],
+  "extends": "./node_modules/gts/tsconfig-google.json",
   "compilerOptions": {
-    "allowImportingTsExtensions": true,
-    "target": "ES6",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "declaration": false,
-    "noImplicitAny": false,
-    "resolveJsonModule": true,
-    "esModuleInterop": true
-  }
+    "rootDir": "./src",
+    "outDir": "build"
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts"]
 }

@@ -1,3 +1,4 @@
+// eslint-disable-next-line node/no-extraneous-import
 import {createBot} from 'adamant-botfactory';
 import * as dotenv from 'dotenv';
 
@@ -11,7 +12,7 @@ const nodes = [
   'https://lake.adamant.im',
 ];
 
-const bot = createBot(process.env.PASS_PHRASE, {
+const bot = createBot(process.env.PASS_PHRASE.trim(), {
   nodes,
 });
 
