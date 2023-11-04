@@ -9,7 +9,7 @@ import {User} from './api/user';
 /**
  * @nav Bot
  */
-type ErrorHandler = (error: BotFactoryError) => void;
+export type ErrorHandler = (error: BotFactoryError) => void;
 
 /**
  * @nav Bot
@@ -109,4 +109,12 @@ function createBot(passphrase: string, options: ApiOptions) {
   return bot;
 }
 
-export {createBot, Router};
+export {createBot, Bot};
+
+export * from './error';
+
+export * from './router/index';
+export * from './router/layer';
+
+export * from './api/index';
+export * from './api/user';
