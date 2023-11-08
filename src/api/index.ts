@@ -23,6 +23,8 @@ export interface ApiOptions {
   enableSSL?: boolean;
   logger?: CustomLogger;
   logLevel?: LogLevel;
+  checkHealthAtStartup?: boolean;
+  timeout?: number;
 }
 
 export type DecodedMessageTransaction = Omit<
@@ -65,10 +67,11 @@ export class Api {
     this.address = address;
 
     // Initialize API
-    const {nodes, logLevel} = this.options;
+    const {nodes, logLevel, checkHealthAtStartup} = this.options;
     const apiOptions = {
       nodes,
       logLevel,
+      checkHealthAtStartup,
     };
 
     this.api = new AdamantApi(apiOptions);
