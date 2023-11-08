@@ -12,7 +12,8 @@
     "compile": "tsup-node",
     "fix": "gts fix",
     "pretest": "npm run compile",
-    "posttest": "npm run lint"
+    "posttest": "npm run lint",
+    "prepublish": "npm run compile"
   },
   "keywords": [
     "adm",
