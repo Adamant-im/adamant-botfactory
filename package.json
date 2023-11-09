@@ -13,7 +13,7 @@
     "fix": "gts fix",
     "pretest": "npm run compile",
     "posttest": "npm run lint",
-    "prepublish": "npm run compile"
+    "prepublishOnly": "npm run compile"
   },
   "keywords": [
     "adm",
