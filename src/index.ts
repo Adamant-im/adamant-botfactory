@@ -40,6 +40,10 @@ class Bot extends Router {
     };
   }
 
+  get address() {
+    return this.api.address;
+  }
+
   /**
    * Starts the webhook client and listens for new messages.
    */
