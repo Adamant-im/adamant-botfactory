@@ -48,7 +48,8 @@ class Router {
    * Registers some middlewares or routers.
    */
   public use(...handlers: (Layer | RouterHandler)[]) {
-    return this.stack.push(...handlers);
+    this.stack.push(...handlers);
+    return this;
   }
 
   /**
