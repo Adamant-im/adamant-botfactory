@@ -47,8 +47,8 @@ class Router {
   /**
    * Registers some middlewares or routers.
    */
-  public use(...handlers: RouterHandler[]) {
-    this.stack.push(...handlers);
+  public use(...handlers: (Layer | RouterHandler)[]) {
+    return this.stack.push(...handlers);
   }
 
   /**
@@ -63,7 +63,7 @@ class Router {
    * ```
    */
   public hears(pattern: RegExp, ...handlers: RouterHandler[]) {
-    this.push('text', pattern, handlers);
+    return this.push('text', pattern, handlers);
   }
 
   /**
@@ -86,7 +86,7 @@ class Router {
    * ```
    */
   public command(name: string, ...handlers: RouterHandler[]) {
-    this.push('command', name, handlers);
+    return this.push('command', name, handlers);
   }
 
   private push(
@@ -96,6 +96,8 @@ class Router {
   ) {
     const layer = new Layer(type, trigger, handlers);
     this.stack.push(layer);
+
+    return this;
   }
 
   /**
