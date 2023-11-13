@@ -40,6 +40,15 @@ class Bot extends Router {
     };
   }
 
+  /**
+   * Creates copy of the bot with the same handlers
+   */
+  static extends(bot: Bot) {
+    return (passphrase: string, options: ApiOptions) => {
+      return new Bot(passphrase, options).use(...bot.stack);
+    };
+  }
+
   get address() {
     return this.api.address;
   }
@@ -113,7 +122,19 @@ function createBot(passphrase: string, options: ApiOptions) {
   return bot;
 }
 
-export {createBot, Bot};
+/**
+ * Creates a new bot instance with the same middlewares as a given bot.
+ *
+ * @details
+ * Returns `createBot`-like function.
+ *
+ * @nav Bot
+ */
+function copyBot(bot: Bot) {
+  return Bot.extends(bot);
+}
+
+export {createBot, copyBot, Bot};
 
 export * from './error';
 

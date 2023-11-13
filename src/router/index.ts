@@ -38,7 +38,7 @@ export interface RouterHandler {
  * @nav Router
  */
 class Router {
-  private stack: Array<Layer | RouterHandler>;
+  protected stack: Array<Layer | RouterHandler>;
 
   constructor() {
     this.stack = [];
