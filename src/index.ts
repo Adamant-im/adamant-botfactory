@@ -49,12 +49,15 @@ class Bot extends Router {
     };
   }
 
+  /**
+   * Bot's ADAMANT address.
+   */
   get address() {
     return this.api.address;
   }
 
   /**
-   * Node url that bot is connected to.
+   * Node url that bot is connected to right now.
    */
   get node() {
     return this.api.api.node;
