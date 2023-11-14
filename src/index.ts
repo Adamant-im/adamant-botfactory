@@ -54,6 +54,13 @@ class Bot extends Router {
   }
 
   /**
+   * Node url that bot is connected to.
+   */
+  get node() {
+    return this.api.api.node;
+  }
+
+  /**
    * Starts the webhook client and listens for new messages.
    */
   start(callback?: () => void) {
