@@ -74,7 +74,13 @@ class Bot extends Router {
    * Starts the webhook client and listens for new messages.
    */
   start(callback?: () => void) {
-    this.api.listen(this.handleTransaction.bind(this));
+    this.api.listen(transaction => {
+      this.handleTransaction(transaction).catch(error => {
+        const botFactoryError = new BotFactoryError(`${error}`, transaction);
+
+        this.handleError(botFactoryError);
+      });
+    });
 
     callback?.();
   }
@@ -99,29 +105,34 @@ class Bot extends Router {
    * @param transaction Encrypted transaction object to process.
    */
   async handleTransaction(transaction: ChatMessageTransaction) {
-    const done = (error?: string) => {
-      if (error) {
-        const botFactoryError = new BotFactoryError(error, transaction);
+    return new Promise<void>((resolve, reject) => {
+      const done = (error?: string) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve();
+        }
+      };
 
-        this.handleError(botFactoryError);
-      }
-    };
+      this.api
+        .decode(transaction)
+        .then(result => {
+          if (!result.success) {
+            throw result.error;
+          }
 
-    const result = await this.api.decode(transaction);
+          return result.decodedTransaction;
+        })
+        .then(decodedTransaction => {
+          const {senderId, senderPublicKey} = decodedTransaction;
 
-    if (!result.success) {
-      return done(result.error);
-    }
-
-    const {decodedTransaction} = result;
-    const {senderId, senderPublicKey} = decodedTransaction;
-
-    const user = this.createUser({
-      address: senderId as AdamantAddress,
-      publicKey: senderPublicKey,
+          const user = this.createUser({
+            address: senderId as AdamantAddress,
+            publicKey: senderPublicKey,
+          });
+          super.handle(user, decodedTransaction, done);
+        });
     });
-
-    super.handle(user, decodedTransaction, done);
   }
 }
 
