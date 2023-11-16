@@ -64,6 +64,13 @@ class Bot extends Router {
   }
 
   /**
+   * Bot's public/private keys.
+   */
+  get keyPair() {
+    return this.api.keyPair;
+  }
+
+  /**
    * Node url that bot is connected to right now.
    */
   get node() {

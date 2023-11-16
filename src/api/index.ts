@@ -13,6 +13,7 @@ import {
   ChatroomsOptions,
   TransactionQuery,
   MessageType,
+  KeyPair,
 } from 'adamant-api';
 
 export interface ApiOptions {
@@ -50,6 +51,8 @@ export class Api {
   public api: AdamantApi;
 
   public address: AdamantAddress;
+  public keyPair: KeyPair;
+
   public options: ApiOptions;
 
   constructor(passphrase: string, options: ApiOptions) {
@@ -65,6 +68,7 @@ export class Api {
     const address = createAddressFromPublicKey(keyPair.publicKey);
 
     this.address = address;
+    this.keyPair = keyPair;
 
     // Initialize API
     const {nodes, logLevel, checkHealthAtStartup} = this.options;
