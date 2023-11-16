@@ -4,7 +4,7 @@ import {BotFactoryError} from './error';
 import {Router} from './router/index';
 
 import {Api, type ApiOptions} from './api/index';
-import {User} from './api/user';
+import {User, type UserData} from './api/user';
 
 /**
  * @nav Bot
@@ -47,6 +47,13 @@ class Bot extends Router {
     return (passphrase: string, options: ApiOptions) => {
       return new Bot(passphrase, options).use(...bot.stack);
     };
+  }
+
+  /**
+   * Creates a user within bot's api.
+   */
+  createUser(user: UserData) {
+    return new User(this.api, user);
   }
 
   /**
@@ -109,7 +116,7 @@ class Bot extends Router {
     const {decodedTransaction} = result;
     const {senderId, senderPublicKey} = decodedTransaction;
 
-    const user = new User(this.api, {
+    const user = this.createUser({
       address: senderId as AdamantAddress,
       publicKey: senderPublicKey,
     });
