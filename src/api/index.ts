@@ -51,6 +51,7 @@ export class Api {
   public api: AdamantApi;
 
   public address: AdamantAddress;
+  public publicKey: string;
   public keyPair: KeyPair;
 
   public options: ApiOptions;
@@ -69,6 +70,8 @@ export class Api {
 
     this.address = address;
     this.keyPair = keyPair;
+
+    this.publicKey = keyPair.publicKey.toString('hex');
 
     // Initialize API
     const {nodes, logLevel, checkHealthAtStartup} = this.options;
